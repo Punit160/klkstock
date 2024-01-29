@@ -1,0 +1,53 @@
+
+.mainBox{
+    position:absolute; 
+    z-index: 100000; 
+    background-color:#44546a73; 
+    height: 100% !important;
+    width: 100vw; 
+    display: none; 
+    right:0;
+}
+
+.mode1, .mode2{
+    display: none;
+}
+
+.innerBox{
+    position: absolute; 
+    z-index: 100010; 
+    min-width: 700px !important;
+    top: 10%;
+    margin-right: 20% !important;
+    left:27%;
+}
+
+@media (min-width: 801px) and (max-width: 1024px){
+    .innerBox{
+        top: 7%;
+        left:12%;
+    }
+}
+
+@media (min-width: 470px) and (max-width: 800px){
+        .innerBox{
+            margin-right: auto !important;
+            margin-left: auto !important;
+            top: 7%;
+            left:4%;
+            right:4%;
+        }
+}
+
+@media (max-width: 470px){
+    .innerBox{
+        margin-right: 0 !important;
+        top: 2%;
+        left:4%;
+        right:4%;
+    }
+}
+
+.specOps{
+    display: none;
+}

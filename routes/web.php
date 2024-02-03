@@ -23,6 +23,7 @@ use App\Http\Controllers\RewardPointController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ExpensecategoryController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\HolidayController;
@@ -275,6 +276,14 @@ Route::post('/product/save-product', [ProductController::class, 'create'])->name
 Route::get('/product/view-product', [ProductController::class, 'view_product'])->name('view-product');
 
 // End ProductController
+
+// Start PurchaseController
+
+Route::get('/purchase/add-purchase', [PurchaseController::class, 'add_purchase'])->name('add-purchase');
+Route::post('/purchase/save-purchase', [PurchaseController::class, 'create'])->name('save-purchase');
+Route::get('/purchase/view-purchase', [PurchaseController::class, 'view_purchase'])->name('view-purchase');
+
+// End PurchaseController
 
 // Start ExpensecategoryController
 

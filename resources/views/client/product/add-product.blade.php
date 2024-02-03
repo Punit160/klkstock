@@ -872,6 +872,6 @@ function emptyValuesInTable(){
     body.innerHTML = "";
   }
 }
-         </script>
+</script>
 
-        @include('client.component.page-footer')
+@include('client.component.page-footer')

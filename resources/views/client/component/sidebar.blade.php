@@ -115,7 +115,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
+                                <a  href="{{route('add-purchase')}}" class="nav-link">
                                 <i class="fas fa-arrow-right nav-icon" style="font-size: small;"></i>
                                 <p>Add Purchase</p>
                                 </a>
@@ -127,7 +127,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
+                                <a  href="{{route('view-purchase')}}" class="nav-link">
                                 <i class="fas fa-arrow-right nav-icon" style="font-size: small;"></i>
                                 <p>Purchase List</p>
                                 </a>

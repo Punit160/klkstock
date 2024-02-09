@@ -160,55 +160,72 @@
     });
 
 </script>
-
-<script type="text/javascript">
-
-var i = 0;
-
-$("#add").click(function () {
-
-    ++i;
-
-    $("#dynamicPurchase").append('<tr><td><select name="types[]" id="type_' + i + '_name"  class="form-control type_name type_name' + i + '"  data-index="' + ($('.type_name').length + 1) + '"><option value="">-- Choose Type --</option> @foreach ($type as $types)<option value="{{ $types->id}}"> {{ $types->name }}</option>@endforeach</select></td><td> <select name="product" id="product_' + i + '_name"  class="form-control product_name product_name' + i + '" data-index="' + ($('.product_name').length + 1) + '"><option value="">-- Choose Product --</option></select></td><td><input type="text" id="quantity' + i + '" name="quantities[]" class="form-control"  /></td><td><input type="number" id="price' + i + '" name="prices[]" class="form-control" /></td><td><input type="number" id="tax' + i + '" name="taxes[]" class="form-control" /></td><td><input type="number" id="subtotal' + i + '" name="subtotals[]" class="form-control" /></td> <td><button type="button" class="pull-right btn btn-danger rounded-circle remove-tr"><i class="fa fa-trash"></i></button></td> </tr>');
-});
-
-$(document).on('click', '.remove-tr', function () {
-    $(this).parents('tr').remove();
-});
-
-</script>
-
-
-    
+   
 <script>
-  
-   $(document).on('change', '.product_type', function() {
-  var index = $(this).data('index');
-  var productType = $(this).val();
-  var productSelect = $('select.product_name[data-index="' + index + '"]');
-  $.ajaxSetup({
-    headers: {
-   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-}
-  });
-  if (productType) {
-    $.ajax({
-      url: "{{url('/fetch-product-data')}}",
-      type: "POST",
-      data: {
-        'product_type':productType
-      },
-      success: function (res) { // Fixed variable name from 'result' to 'res'
-        productSelect.html('<option value="">Select Product</option>');
-        $.each(res.products, function(key, value) {
-          productSelect.append('<option value="' + value.product_name + '">' + value.product_name + '</option>');
-        });
+  $(document).on('change', '.product_type', function() {
+    var index = $(this).data('index');
+    var TypeId = $(this).val();
+    var productSelect = $('select.product_name[data-index="' + index + '"]');
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       }
     });
-  }
-});
-
+    if (TypeId) {
+      $.ajax({
+        url: "{{url('/fetch-product-data')}}",
+        type: "POST",
+        data: {
+          'type_id': TypeId
+        },
+        success: function (res) {
+          if (res && res.products) {
+            productSelect.html('<option value="">Select Product</option>');
+            $.each(res.products, function(key, value) {
+              productSelect.append('<option value="' + value.product_code + '">' + value.name + '</option>');
+            });
+          } else {
+            console.error("Response or products array is missing or empty.");
+          }
+        },
+        error: function(xhr, status, error) {
+          console.error("Error:", error);
+        }
+      });
+    }
+  });
 </script>
+
+<script>
+ $(document).on('change', '.product_name', function() {
+    var index = $(this).data('index');
+    var productCode = $(this).val();
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({
+        url: "{{ url('/fetch-product-details') }}",
+        type: "POST",
+        data: {
+            'product_code': productCode
+        },
+        success: function (res) {
+            if (res && res.details) {
+                $('#price' + index).val(res.details.price);
+                $('#tax' + index).val(res.details.tax_value);
+            } else {
+                console.error("Response or details are missing or empty.");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+        }
+    });
+});
+</script>
+
 </body>
 
 </html>

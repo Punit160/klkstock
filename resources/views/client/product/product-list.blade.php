@@ -160,6 +160,7 @@
                         <th>Brand</th>
                         <th>Category</th>
                         <th>Type</th>
+                        <th>Quantity</th>
                         <th>Unit</th>
                         <th>Price</th>
                         <th>Cost</th>
@@ -175,6 +176,8 @@
                       <td>{{$products->brand}}</td>
                       <td>{{$products->category}}</td>
                       <td>{{$products->type}}</td>
+                      @php  $qty = DB::table('product_warehouse')->where('product_id',$products->id)->sum('quantity'); @endphp
+                      <td>{{$qty}}</td>
                       <td>{{$products->product_unit}}</td>
                       <td>{{$products->price}}</td>
                       <td>{{$products->cost}}</td>
@@ -207,6 +210,7 @@
                         <th>Code</th>
                         <th>Brand</th>
                         <th>Category</th>
+                        <th>Quantity</th>
                         <th>Type</th>
                         <th>Unit</th>
                         <th>Price</th>

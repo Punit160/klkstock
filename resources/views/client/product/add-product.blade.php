@@ -251,8 +251,8 @@
         </div>
         
         <!-- /.content-wrapper -->
-         <script>
-            let count = 0;
+<script>
+  let count = 0;
 let holder = [];
 let variantDivs = {};
 let calIndex=""
@@ -287,7 +287,7 @@ function higherSelect(thisbtn){
 function createnewvariant(val) {
   holder.push(0);
   if (val.value == "yes") {
-    const firstvariant = document.createElement("div");
+    const firstvariant = document.createElement("form");
     firstvariant.className = "w-100";
     firstvariant.id = "destroythis";
     firstvariant.action = "#";
@@ -297,18 +297,17 @@ function createnewvariant(val) {
                 <div class="row m-0">
                     <div class="col-12 col-md-6 hasVariants">
                         <div class="form-group">
-                            <label for="options">Product Option *</label>
-                            <input type="text" name="options[]" id="prodOption.${holder[count]}" class="form-control " placeholder="Color, Size,..." required>
+                            <label for="prodOption">Product Option *</label>
+                            <input type="text" name="prodOption" id="prodOption.${holder[count]}" class="form-control " placeholder="Color, Size,..." required>
                         </div>
                     </div>
 
                     <div class="col-12 col-md-6 hasVariants">
                         <div class="form-group">
-                            <label for="values">Product Value *</label>
+                            <label for="prodValue">Product Value *</label>
                             <div id="prodbtns" class="rounded row  p-0 py-1 gap-2 countVariant" style="border: 1px solid #ced4da;">
 
-                                <input type="text" maxlength="30" id="prodValue.${holder[count]}" class="inputVal form-control border-0 col mx-auto"  style=" max-height: 30px; " onkeyup="checkComma(event, this)" placeholder="Enter variant separated by comma">
-                        <input type="hidden" name="values[]" id="prodValue.${holder[count]}.${holder[count]}" value="">
+                                <input type="text" maxlength="30" name="prodValue" id="prodValue.${holder[count]}" class="inputVal form-control border-0 col mx-auto"  style=" max-height: 30px; " onkeyup="checkComma(event, this)" placeholder="Enter variant separated by comma" required>
                             </div>
                         </div>
                     </div>
@@ -329,7 +328,6 @@ function createnewvariant(val) {
                         <th class="text-nowrap">SKU</th>
                         <th>Quantity</th>
                         <th>Warehouse</th>
-                        <th>Variation Prices</th>
                     </tr>
                 </thead>
                 <tbody id="valueInsertion">
@@ -376,7 +374,7 @@ function createnewvariant(val) {
                     </div>
                     `;
   }
-  document.getElementById("wareBody").parentElement.parentElement.appendChild(warehouses);
+  document.getElementById("warehousenames").parentElement.appendChild(warehouses);
 })();
 
 // Adding New Variants
@@ -396,18 +394,17 @@ function addnewvariants() {
         <div class="row m-0">
             <div class="col-12 col-md-6 hasVariants">
                 <div class="form-group">
-                    <label for="options">Product Option *</label>
-                    <input type="text" name="options[]" id="prodOption.${holder[count]}" class="form-control" placeholder="Color, Size,..." required>
+                    <label for="prodOption">Product Option *</label>
+                    <input type="text" name="prodOption" id="prodOption.${holder[count]}" class="form-control" placeholder="Color, Size,..." required>
                 </div>
             </div>
 
             <div class="col-12 col-md-6 hasVariants">
                 <div class="form-group">
-                    <label for="values">Product Value *</label>
+                    <label for="prodValue">Product Value *</label>
                     <div id="prodbtns" class=" rounded row p-0 pt-1 gap-2 countVariant"  style="border: 1px solid #ced4da;">
 
-                        <input type="text" maxlength="30" id="prodValue.${holder[count]}"  style=" max-height: 30px;" onkeyup="checkComma(event, this)" class="inputVal form-control border-0 col mx-auto" placeholder="Enter variant separated by comma" >
-                        <input type="hidden" name="values[]" id="prodValue.${holder[count]}.${holder[count]}" value="">
+                        <input type="text" maxlength="30" name="prodValue" id="prodValue.${holder[count]}"  style=" max-height: 30px;" onkeyup="checkComma(event, this)" class="inputVal form-control border-0 col mx-auto" placeholder="Enter variant separated by comma" required>
                     </div>
                 </div>
             </div>
@@ -460,6 +457,7 @@ function createdfirstVariant() {
 
 
   va.addEventListener("input", function (event) {
+    
     const inputVal = event.target;
     if (inputVal.classList.contains("inputVal")) {
       const value = inputVal.value.trim();
@@ -492,8 +490,10 @@ function createdfirstVariant() {
   });
 
   va.addEventListener("keydown", function (event) {
+    
     const inputVal = event.target;
     if (inputVal.classList.contains("inputVal") && event.key === "Enter") {
+      event.preventDefault();
       const value = inputVal.value.trim();
       const index = Array.from(va.getElementsByClassName("inputVal")).indexOf(
         inputVal
@@ -518,6 +518,7 @@ function createdfirstVariant() {
 
 
   va.addEventListener("click", function (event) {
+    
     const inputVal = event.target;
   
  
@@ -555,42 +556,6 @@ function createdfirstVariant() {
   });
   
 
-  // va.addEventListener("click", function (event) {
-  //   const inputVal = event.target;
-  //   if (
-  //     inputVal.classList.contains("inputVal") &&
-  //     event.target.value.includes(",")
-  //   ) {
-  //     const index = Array.from(va.getElementsByClassName("inputVal")).indexOf(
-  //       inputVal
-  //     );
-  //     const value = inputVal.value
-  //       .substring(0, inputVal.value.indexOf(","))
-  //       .trim();
-  //     let checkDupicate = deleteDuplicate(index, value);
-  //     if(checkDupicate == false){
-  //       return;
-  //     }
-  //     else{
-        
-  //       ArrayAppend(index, value);
-  //       inputVal.value = inputVal.value
-  //         .substring(inputVal.value.indexOf(",") + 1)
-  //         .trim();
-  //       createInnerBtns(inputVal);
-  //     }
-  //   }
-  //   if (
-  //     inputVal.classList.contains("inputVal") &&
-  //      event.target.value.includes(" ")
-  //   ) {
-  //     return;
-  //   }
-  
-
-
-
-  // });
 }
 
 
@@ -639,11 +604,6 @@ function ArrayAppend(index, value) {
       inputValuesInTable();
 
     }
-  }
-  let newName = "div" + `${cnt-1}`;
-  document.getElementById(`prodValue.${(cnt-1)}.${(cnt-1)}`).value = ``;
-  for(let ki=0; ki<variantDivs[newName].length;ki++){
-      document.getElementById(`prodValue.${(cnt-1)}.${(cnt-1)}`).value += `${variantDivs[newName][ki]},`;
   }
 }
 
@@ -751,13 +711,7 @@ inputValuesInTable();
 function deletingFinal(inde, deletedValue) {
   let newArray = [];
 
-//   let newly= variantDivs.div`inde`.filter((items)=>{
-//     if(items!=deletedValue){
- 
-//      return items;
-//     }
-//    });
-//  variantDivs.div`inde`=newly;
+
   
   if (inde === 0 && Array.isArray(colorArray)) {
     colorArray.forEach((item) => {
@@ -813,23 +767,19 @@ function inputValuesInTable(){
       const newrow = document.createElement('tr');
       newrow.innerHTML=`
         <td>
-          <input type="text" name="variation_names[]" id="varname" class="form-control" value="${productArr[ki]}" readonly>
+          <input type="text" name="varname" id="varname" class="form-control" value="${productArr[ki]}" disabled>
         </td>
         <td>
-          <input type="text" name="skus[]" id="varitemcode" class="form-control" value="${productArr[ki]}-">
+          <input type="text" name="varitemcode" id="varitemcode" class="form-control" value="${productArr[ki]}-">
         </td>
         <td>
-          <input type="number" name="varqtities[]" id="varqty" class="form-control">
+          <input type="number" name="varqty" id="varqty" class="form-control">
         </td>
         <td><span class="varwarehouse"></span>
-          <select name="varwarehouses[]" id="varwarehouses" class="form-control">
-          @foreach ($warehouse as $warehouses)
-              <option value="{{$warehouses->name}}">{{$warehouses->name}}</option>
-          @endforeach
+          <select name="varwarehouse" id="varwarehouse" class="form-control">
+              <option value="war1" selected>Warehouse 1</option>
+              <option value="war2">Warehouse 1</option>
           </select>
-        </td>
-        <td>
-          <input type="number" name="variation_prices[]" id="variation_prices" class="form-control">
         </td>
       `;
       body.appendChild(newrow);
@@ -840,23 +790,19 @@ function inputValuesInTable(){
       const newrow = document.createElement('tr');
       newrow.innerHTML=`
         <td>
-          <input type="text" name="variation_names[]" id="varname" class="form-control" value="${colorArray[ki]}" readonly>
+          <input type="text" name="varname" id="varname" class="form-control" value="${colorArray[ki]}" disabled>
         </td>
         <td>
-          <input type="text" name="skus[]" id="varitemcode" class="form-control" value="${colorArray[ki]}-">
+          <input type="text" name="varitemcode" id="varitemcode" class="form-control" value="${colorArray[ki]}-">
         </td>
         <td>
-          <input type="number" name="varqtities[]" id="varqty" class="form-control">
+          <input type="number" name="varqty" id="varqty" class="form-control">
         </td>
         <td><span class="varwarehouse"></span>
-          <select  name="varwarehouses[]" id="varwarehouses" class="form-control">
-          @foreach ($warehouse as $warehouses)
-          <option value="{{$warehouses->name}}">{{$warehouses->name}}</option>
-      @endforeach
+          <select name="varwarehouse" id="varwarehouse" class="form-control">
+              <option value="war1" selected>Warehouse 1</option>
+              <option value="war2">Warehouse 1</option>
           </select>
-        </td>
-        <td>
-          <input type="number" name="variation_prices[]" id="variation_prices" class="form-control">
         </td>
       `;
       body.appendChild(newrow);
@@ -872,6 +818,6 @@ function emptyValuesInTable(){
     body.innerHTML = "";
   }
 }
-</script>
+  </script>
 
 @include('client.component.page-footer')

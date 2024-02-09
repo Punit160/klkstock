@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('alert_qty')->nullable();
             $table->string('product_tax')->nullable();
             $table->string('tax_method')->nullable();
+            $table->string('tax_value')->nullable();
             $table->string('detail',5000)->nullable();
             $table->string('image')->nullable();
             $table->string('initial_stock')->nullable();

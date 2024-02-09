@@ -10,6 +10,7 @@ use App\Models\Tax;
 use App\Models\Currency;
 use App\Models\ProductCategory;
 use App\Models\Product;
+use App\Models\Product_warehouse;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImportProductCategory;
 use Illuminate\Support\Facades\File;
@@ -43,7 +44,12 @@ class ProductController extends Controller
        $userid = $request->session()->get('loginId');
        $product->company_id = $usercompany;
        $product->name = $request->name;
-       $product->product_code = $request->product_code;
+       $code_rand = rand(1000, 99999);
+       if($request->product_code == ""){
+        $product->product_code = $code_rand;
+       }else{
+        $product->product_code = $request->product_code;
+       }
        $product->type = $request->type;
        $product->category = $request->category; 
        $product->brand = $request->brand;
@@ -54,8 +60,17 @@ class ProductController extends Controller
        $product->price = $request->price;
        $product->dso = $request->dso;
        $product->alert_qty = $request->alert_qty;
-       $product->product_tax = $request->product_tax;
        $product->tax_method = $request->tax_method;
+       $product->product_tax = $request->product_tax;
+       if($request->tax_method == '1'){
+        $product->tax_value = '0';
+       }else{
+       $tax =  DB::table('taxes')->where('name', $request->product_tax)->where('company_id', $usercompany)->first();
+       $pro_price = floatval($request->price);
+       $tax_percent = floatval($tax->rate);
+       $taxval =  ($pro_price * $tax_percent)/100;
+       $product->tax_value = $taxval;
+       }
        $product->detail = $request->detail;
        if($request->hasfile('image')){
         $file = $request->file('image');
@@ -68,6 +83,7 @@ class ProductController extends Controller
        $product->created_by = $userid;
        $product->save(); 
        if ($product->save()) {
+       $product_id = $product->id;
       if ($request->initial_stock ==  '1') {
 
         $options = $request->input('options', []);
@@ -92,6 +108,21 @@ class ProductController extends Controller
                     'variation_price' => $variation_prices[$j],
                     'company_id' => $usercompany,
                 ]);
+        $prowar = DB::table('product_warehouse')->where('product_id', $product_id)->where('warehouse_id', $varwarehouses[$j])->first();
+        if($prowar){
+            $new_qty = floatval($varquantities[$j]);
+            $existing_qty = floatval($prowar->quantity);
+            $total_qty = $new_qty + $existing_qty;
+            DB::table('product_warehouse')->where('product_id', $product_id)->where('warehouse_id', $varwarehouses[$j])->update(['quantity' => $total_qty]);
+        }
+        else{
+            $warpro = new Product_warehouse;
+            $warpro->product_id = $product_id;
+            $warpro->warehouse_id = $varwarehouses[$j];
+            $warpro->quantity =  $varquantities[$j];
+            $warpro->company_id =  $usercompany;
+            $warpro->save();
+        }
             }
         }
         

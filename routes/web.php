@@ -282,8 +282,9 @@ Route::get('/product/view-product', [ProductController::class, 'view_product'])-
 Route::get('/purchase/add-purchase', [PurchaseController::class, 'add_purchase'])->name('add-purchase');
 Route::post('/purchase/save-purchase', [PurchaseController::class, 'create'])->name('save-purchase');
 Route::get('/purchase/view-purchase', [PurchaseController::class, 'view_purchase'])->name('view-purchase');
-
-// End PurchaseController
+Route::post('/fetch-product-data', [PurchaseController::class, 'fetchproducts'])->name('fetch-product-data');
+Route::post('/fetch-product-details', [PurchaseController::class, 'fetchproductdetails'])->name('fetch-product-details');
+// End PurchaseController  
 
 // Start ExpensecategoryController
 
